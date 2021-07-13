@@ -44,8 +44,8 @@ $$
 
 同时更新协方差矩阵 我们对每个状态点乘以矩阵$A$ 能够得到如下:
 $$
-Cov(x) = \sum \\
-Cov(Ax) = A\sum A^T \tag{4}
+Cov(x,x) = Var(x) =  \sum \\
+Cov(Ax,Ax) = A\sum A^T \tag{4}
 $$
 结合方程$(4)$ 和方程$(3)$ 可以得到：
 $$
