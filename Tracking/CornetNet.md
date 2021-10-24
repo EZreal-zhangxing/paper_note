@@ -77,7 +77,39 @@ $L_{push}$ 为分组计算公式
 $$
 L_{push} = {1 \over N(N-1)} \sum_{k=1}^N\sum_{j=1,j \neq k}^N max(0,\Delta - |e_k - e_j|) \tag 2
 $$
-$e_k$为
+$e_k$为$e_{t_k}$和$e_{b_k}$的平均值，$\Delta  = 1$
 
+## 5.Corner Pooling
+
+角池化层，假设 坐标为$(i,j)$的像素进行左上角池化，
+
+在范围$(i,j) \rightarrow (H,j)$ 上由下到上进行池化。
+$$
+t_{ij} = \begin{cases}
+\max(f_{t_{i,j}},t_{(i+1)j}) & if i< H \\
+f_{t_{Hj}} & otherwise
+\end{cases}
+$$
+在范围$(i,j) \rightarrow (i,W)$ 由右到左进行池化
+$$
+l_{ij} = \begin{cases}
+\max(f_{l_{i,j}},l_{i(j+1)}) & if j< W \\
+f_{l_{iW}} & otherwise
+\end{cases}
+$$
+最后将两者进行相加
+
+以同样的方法计算右下池化层，并合并
+
+最后我们在残差块上进行了模块结构的修改
+
+![image-20211021153931740](image-20211021153931740.png)
+
+## 6.Experiments
+
+使用数据增强，主成分分析(PCA)，使用Adam优化器，损失函数见：
+$$
+L = L_{det} + \alpha L_{pull} + \beta L_{push} + \gamma L_{off} \tag 3
+$$
 
 
