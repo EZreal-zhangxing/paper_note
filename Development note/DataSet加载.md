@@ -111,7 +111,25 @@ def collater(data):
     return {'img': padded_imgs, 'annot': annot_padded, 'scale': scales}
 ```
 
+其中collate_fn的函数输入参数是dataset中getitem返回的一个批次的数据的集合形式，
 
+而定义成函数的时候，要传入一些其他参数有两种解决方案
 
+### 使用lamda表达式
 
+```python
+info = args.info	# info是已经定义过的
+loader = Dataloader(collate_fn=lambda x: collate_fn(x, info))
+```
+
+### 创建成一个可被调用的类
+
+```python
+class collater():
+	def __init__(self, *params):
+		self. params = params
+	
+	def __call__(self, data):
+		'''在这里重写collate_fn函数'''
+```
 
