@@ -133,3 +133,10 @@ class collater():
 		'''在这里重写collate_fn函数'''
 ```
 
+
+
+## Reference
+
+[pytorch中collate_fn函数的使用&如何向collate_fn函数传参](https://blog.csdn.net/dong_liuqi/article/details/114521240)
+
+[详解PyTorch中加载数据的方法–Dataset、Dataloader、Sampler、collate_fn等](https://www.codenong.com/js1651ed9d48c9/)
