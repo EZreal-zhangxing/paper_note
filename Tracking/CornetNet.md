@@ -112,4 +112,3 @@ $$
 L = L_{det} + \alpha L_{pull} + \beta L_{push} + \gamma L_{off} \tag 3
 $$
 
-
