@@ -4,7 +4,7 @@
 
 RetinaNet,SSD,YOLOv3,Faster RCNN 都是通过预定义的Anchor来回归目标box。
 
-FCOS是没有Anchor的
+**FCOS是没有Anchor的**
 
 基于Anchor的检测器有如下几个缺点：
 
@@ -69,7 +69,7 @@ $$
 L(\{p_{x,y}\},\{t_{x,y}\}) = {1 \over N_{pos}}\sum_{x,y}L_{cls}(p_{x,y},c_{x,y}^*) + { \lambda \over N_{pos}}\sum_{x,y}{\mathbb 1_{\{c_{x,y}^* > 0\}}} L_{reg}(t_{x,y},t_{x,y}^*) \tag 1
 $$
 
-$L_{cls}$是Focal Loss
+$L_{cls}$是[Focal Loss](./FocalLoss.md)
 
 $L_{reg}$是UnitBox的IOU损失
 

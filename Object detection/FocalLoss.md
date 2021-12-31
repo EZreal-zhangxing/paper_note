@@ -84,3 +84,38 @@ $$
 
 最后我们注意到：实行损失层和sigmoid 操作的结合来计算$p$ 获得了很大的数值稳定性
 
+## RetinaNet 
+
+使用FPN(Feature pyramid Network) 作为Retinanet的 backbone.
+
+![image-20211222104735129](image-20211222104735129.png)
+
+我们在在ResNet的头部层上构建FPN，我们重构了特征金字塔层$P_3 \to P_7$ ，每一层都是上一层的两倍下采样。所有的FPN都是256个通道。
+
+RetinaNet使用特征金字塔 $P_3 \to P_7$
+
+其中 $P_3 \to P_5$  是由对应的Resnet网路的残差结构 $C_3 \to C_5 $所计算出来 此处详情见 [FPN](./Feature Pyramid Network.pdf)
+
+$P_6$ 由 $C_5$通过$Conv(in,out,kernal \ size= 3 \times 3,stride = 2)$计算出来
+
+$P_7$ 由 $P_6$通过$Conv(in,out,kernal \ size= 3 \times 3,stride = 2) + ReLU$ 计算得到
+
+### Anchor
+
+使用和在FPN网络里相似的RPN变体的平移不变性的Anchor。Anchor的面积 $P_3 \to P_7 \in [32^2,512^2]$
+
+在每一层特征上Anchor的宽高比都是$\{ 1:2,1:1,2:1 \}$
+
+在每一层的我们添加Anchor的尺寸为$\{ 2^0,2^{1/3},2^{2/3} \}$
+
+所以每一层有9个Anchor
+
+**每个Anchor分配一个K维的One-hot向量，K为目标类别的个数，还有一个4维的框回归目标**
+
+每个Anchor分配到与GTbox的IOU阈值为0.5 如果$IOU \in [0,0.4)$ 那就被分配为背景目标
+
+如果一个Anchor有多个目标怎么办？
+
+对于$IOU \in [0.4,0.5)$ 的目标将会被忽略。
+
+**bbox回归计算出来的是Anchor的偏移**
