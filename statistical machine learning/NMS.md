@@ -10,6 +10,7 @@ def py_cpu_nms(bboxs, thresh):
     for item in bboxs:
         bbox = item['bbox']
         score = item['score']
+        # 把分数追加到bbox框四个坐标之后，构成五维数据
         bbox.append(score)
         dets.append(bbox)
     dets = np.array(dets)
@@ -42,9 +43,19 @@ def py_cpu_nms(bboxs, thresh):
         # 计算面积
         inter = w * h
         # 优化后的面积 / 用得分最大的框的面积+其他框的面积-优化后的面积
+        # 计算交幷比
         ovr = inter / (areas[i] + areas[order[1:]] - inter)
-        # 阈值比较 一直到所有的面积比大于阈值
+        # 阈值比较 找出比阈值小的交幷比所在的索引
         inds = np.where(ovr <= thresh)[0]
+				'''
+        因为得到的是除去了第一个元素框其他框（该框的交幷比比阈值小）的索引，
+        其索引是从0开始，为了转换回原来的索引因此需要+1
+        例如[1,2,3,4,5],用第一个元素1比上其他值分别得到新的列表
+        [0.5,0.3,0.25,0.2] 而这个数组比阈值0.3小的索引为[2,3]
+        对应原始数组即为[3,4]
+        '''
+        # order 重新赋值那些交幷比比阈值小的框的索引。既可以做到排除第二第三等等的次大值。
+        # 这就是非极大值抑制的由来
         order = order[inds + 1]
 
     return keep
